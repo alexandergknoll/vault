@@ -1,8 +1,13 @@
+// @ts-nocheck
+
 import { normalize } from '@iiif/parser';
 import { AllActions } from '../types';
 import { addMapping, addMappings, importEntities, requestComplete, requestError, requestMismatch } from '../actions';
 
 export const actionListFromResource = (id: string, response: unknown): AllActions[] => {
+  // Override ID
+  response.id = id;
+  response['@id'] = id;
   const { entities, resource, mapping } = normalize(response);
   if (resource.id === undefined) {
     return [requestError({ id, message: 'ID is not defined in resource.' })] as AllActions[];
